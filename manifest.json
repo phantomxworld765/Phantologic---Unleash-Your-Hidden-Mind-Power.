@@ -1,4 +1,45 @@
 {
+  "name": "PhantoLogic - Brain Training Games",
+  "short_name": "PhantoLogic",
+  "description": "Master the art of pure logic with PhantoLogic. Challenge your cognitive skills with Math, Riddles, River Crossing puzzles and Pattern recognition games.",
+  "start_url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
+  "scope": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#6366f1",
+  "theme_color": "#6366f1",
+  "dir": "ltr",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "games",
+    "education"
+  ],
+  "display_override": [
+    "standalone",
+    "window-controls-overlay"
+  ],
+  "shortcuts": [
+    {
+      "name": "Math Master",
+      "url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./#math",
+      "description": "Quick Math Challenge"
+    },
+    {
+      "name": "Brain Riddles",
+      "url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./#riddles",
+      "description": "Solve Mind Riddles"
+    }
+  ]
+}
+{
   "background_color": "#6366f1",
   "dir": "ltr",
   "display": "standalone",
