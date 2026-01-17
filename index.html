@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>PhantoLogic - Brain Training Games</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; overflow-x: hidden; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+  
+        // import React, { useState, useEffect } from 'react';
+import { Brain, Trophy, Target, Droplet, Lightbulb, Play, Home, X, Check, Zap, Star, Heart, Award } from 'lucide-react';
+
+const PhantoLogicApp = () => {
+  const [screen, setScreen] = useState('loading');
+  const [currentGame, setCurrentGame] = useState(null);
+  const [score, setScore] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [question, setQuestion] = useState(null);
+  const [userAnswer, setUserAnswer] = useState('');
+  const [showFullScreenAd, setShowFullScreenAd] = useState(false);
+  const [feedback, setFeedback] = useState('');
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [streak, setStreak] = useState(0);
+
+  // Loading Screen Progress
+  useEffect(() => {
+    if (screen === 'loading') {
+      const interval = setInterval(() => {
+        setLoadingProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setTimeout(() => setScreen('intro'), 500);
+            return 100;
+          }
+          return prev + 2;
+        });
+      }, 50);
+      return () => clearInterval(interval);
+    }
+  }, [screen]);
+
+  // Ad Display Logic
+  useEffect(() => {
+    const adTimer = setInterval(() => {
+      if (Math.random() > 0.7 && screen === 'game') {
+        setShowFullScreenAd(true);
+      }
+    }, 35000);
+    return () => clearInterval(adTimer);
+  }, [screen]);
+
+  // Header Ad Component
+  const HeaderAd = () => (
+    <div className="bg-gradient-to-r from-purple-900 to-blue-900 text-white text-center py-2 text-xs border-b border-yellow-400">
+      <div className="flex items-center justify-center gap-2">
+        <Star size={12} className="text-yellow-400 animate-pulse" />
+        <span className="font-semibold">Advertisement Space - 728x90</span>
+      </div>
+    </div>
+  );
+
+  // Footer Ad Component
+  const FooterAd = () => (
+    <div className="bg-gradient-to-r from-blue-900 to-purple-900 text-white text-center py-2 text-xs border-t border-yellow-400">
+      <div className="flex items-center justify-center gap-2">
+        <Zap size={12} className="text-yellow-400" />
+        <span className="font-semibold">Banner Ad - 320x50</span>
+      </div>
+    </div>
+  );
+
+  // Full Screen Ad Component
+  const FullScreenAd = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center">
+      <div className="bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 p-6 rounded-xl max-w-sm w-full mx-4 relative shadow-2xl">
+        <button 
+          onClick={() => setShowFullScreenAd(false)}
+          className="absolute top-2 right-2 bg-white text-gray-800 rounded-full p-1.5 hover:bg-gray-200"
+        >
+          <X size={18} />
+        </button>
+        <div className="text-white text-center">
+          <div className="mb-3">
+            <Star size={50} className="mx-auto text-yellow-300 animate-pulse" />
+          </div>
+          <h3 className="text-2xl font-bold mb-3">Full Screen Ad</h3>
+          <p className="mb-4 text-sm">Interstitial Advertisement</p>
+          <div className="bg-white bg-opacity-20 p-8 rounded-lg backdrop-blur">
+            <p className="text-xs font-semibold">320x480 Ad Space</p>
+          </div>
+          <button 
+            onClick={() => setShowFullScreenAd(false)}
+            className="mt-4 bg-white text-purple-600 px-6 py-2 rounded-full font-bold hover:bg-gray-100 shadow-lg"
+          >
+            Close Ad
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Loading Screen - PhantomXworld
+  const LoadingScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 opacity-50">
+        <div className="absolute top-20 left-20 w-48 h-48 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+        <div className="absolute top-40 right-20 w-48 h-48 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-20 left-40 w-48 h-48 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="text-center relative z-10 px-4">
+        {/* Logo with Multiple Layers */}
+        <div className="mb-6 relative inline-block">
+          <div className="absolute inset-0 animate-spin-slow">
+            <div className="w-32 h-32 border-4 border-yellow-400 border-t-transparent rounded-full"></div>
+          </div>
+          <div className="absolute inset-0 animate-ping opacity-30">
+            <Brain size={80} className="text-yellow-400 mx-auto mt-6" />
+          </div>
+          <Brain size={80} className="text-yellow-400 relative z-10 mt-6 animate-pulse" />
+        </div>
+
+        {/* PhantomXworld Text with Glow */}
+        <div className="mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold mb-1 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 animate-text-glow" style={{textShadow: '0 0 40px rgba(251, 191, 36, 0.5)'}}>
+            PhantomXworld
+          </h1>
+          <p className="text-xl text-white animate-pulse">Mind Games</p>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="w-64 mx-auto mb-3">
+          <div className="bg-gray-800 bg-opacity-50 rounded-full h-3 overflow-hidden backdrop-blur border border-purple-500">
+            <div 
+              className="h-full transition-all duration-300 rounded-full relative overflow-hidden"
+              style={{ 
+                width: `${loadingProgress}%`,
+                background: 'linear-gradient(90deg, #fbbf24, #ec4899, #a855f7)'
+              }}
+            >
+              <div className="absolute inset-0 bg-white opacity-20 animate-shimmer"></div>
+            </div>
+          </div>
+          <p className="text-white mt-2 text-sm font-semibold">{loadingProgress}%</p>
+        </div>
+
+        {/* Loading Text */}
+        <div className="text-white text-sm mb-4 animate-pulse">
+          {loadingProgress < 30 && "Loading assets..."}
+          {loadingProgress >= 30 && loadingProgress < 60 && "Preparing games..."}
+          {loadingProgress >= 60 && loadingProgress < 90 && "Almost ready..."}
+          {loadingProgress >= 90 && "Starting..."}
+        </div>
+
+        {/* Loading Dots */}
+        <div className="flex gap-2 justify-center">
+          <div className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></div>
+          <div className="w-3 h-3 bg-pink-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+          <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes blob {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        @keyframes text-glow {
+          0%, 100% { filter: brightness(1); }
+          50% { filter: brightness(1.3); }
+        }
+        .animate-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        .animate-spin-slow { animation: spin-slow 3s linear infinite; }
+        .animate-shimmer { animation: shimmer 2s infinite; }
+        .animate-text-glow { animation: text-glow 2s ease-in-out infinite; }
+      `}</style>
+    </div>
+  );
+
+  // Intro Screen
+  const IntroScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 flex flex-col">
+      <HeaderAd />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="text-center max-w-2xl">
+          {/* Animated Logo */}
+          <div className="mb-6 relative inline-block">
+            <div className="absolute inset-0 animate-ping opacity-40">
+              <Brain size={90} className="text-white" />
+            </div>
+            <Brain size={90} className="text-white relative z-10 animate-pulse drop-shadow-2xl" />
+          </div>
+          
+          <h1 className="text-5xl font-bold text-white mb-3 drop-shadow-lg">
+            PhantoLogic
+          </h1>
+          <p className="text-lg text-white mb-6 opacity-90">
+            Ultimate Brain Training Experience!
+          </p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 max-w-xl mx-auto">
+            <div className="bg-white bg-opacity-20 backdrop-blur-md p-4 rounded-lg transform hover:scale-105 transition">
+              <div className="text-4xl mb-1">🔢</div>
+              <p className="text-white text-sm font-semibold">Maths</p>
+            </div>
+            <div className="bg-white bg-opacity-20 backdrop-blur-md p-4 rounded-lg transform hover:scale-105 transition">
+              <div className="text-4xl mb-1">🌊</div>
+              <p className="text-white text-sm font-semibold">River</p>
+            </div>
+            <div className="bg-white bg-opacity-20 backdrop-blur-md p-4 rounded-lg transform hover:scale-105 transition">
+              <div className="text-4xl mb-1">💡</div>
+              <p className="text-white text-sm font-semibold">Riddles</p>
+            </div>
+            <div className="bg-white bg-opacity-20 backdrop-blur-md p-4 rounded-lg transform hover:scale-105 transition">
+              <div className="text-4xl mb-1">🧩</div>
+              <p className="text-white text-sm font-semibold">Patterns</p>
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => setScreen('menu')}
+            className="bg-yellow-400 text-purple-900 px-8 py-3 rounded-full text-xl font-bold hover:bg-yellow-300 transform hover:scale-105 transition flex items-center gap-2 mx-auto shadow-2xl"
+          >
+            <Play size={24} />
+            Start Playing
+          </button>
+        </div>
+      </div>
+      <FooterAd />
+    </div>
+  );
+
+  // Generate Math Question - Simple format
+  const generateMathQuestion = () => {
+    const operations = ['+', '-', '×', '÷'];
+    const op = operations[Math.floor(Math.random() * operations.length)];
+    let num1 = Math.floor(Math.random() * (10 * level)) + 1;
+    let num2 = Math.floor(Math.random() * (10 * level)) + 1;
+    
+    if (op === '÷') {
+      num1 = num2 * (Math.floor(Math.random() * 10) + 1);
+    }
+    
+    let answer;
+    switch(op) {
+      case '+': answer = num1 + num2; break;
+      case '-': answer = num1 - num2; break;
+      case '×': answer = num1 * num2; break;
+      case '÷': answer = num1 / num2; break;
+      default: answer = 0;
+    }
+    
+    return {
+      question: `${num1} ${op} ${num2} = ?`,
+      answer: answer,
+      type: 'math'
+    };
+  };
+
+  // Riddles Database
+  const riddles = [
+    { q: "I speak without a mouth and hear without ears. What am I? 🔊", a: "echo" },
+    { q: "What has keys but no locks, space but no room? ⌨️", a: "keyboard" },
+    { q: "The more you take, the more you leave behind. What am I? 👣", a: "footsteps" },
+    { q: "What can travel around the world while staying in corner? 🌍", a: "stamp" },
+    { q: "I'm tall when young and short when old. What am I? 🕯️", a: "candle" },
+    { q: "What gets wet while drying? 🛁", a: "towel" },
+    { q: "What has a head and tail but no body? 💰", a: "coin" }
+  ];
+
+  // Pattern Recognition
+  const patterns = [
+    { q: "2, 4, 6, 8, __? 🔢", a: "10", pattern: "Even numbers" },
+    { q: "1, 1, 2, 3, 5, __? 🌀", a: "8", pattern: "Fibonacci" },
+    { q: "1, 4, 9, 16, __? ⭐", a: "25", pattern: "Squares" },
+    { q: "3, 6, 9, 12, __? 🎯", a: "15", pattern: "Multiples of 3" }
+  ];
+
+  // River Crossing Puzzles
+  const riverPuzzles = [
+    { 
+      scenario: "A farmer needs to cross a river with a 🦊 fox, 🐔 chicken, and 🌾 grain. The boat can only carry the farmer and one item. If left alone, the fox will eat the chicken, and the chicken will eat the grain. How should he cross? 🚣",
+      answer: "chicken",
+      hint: "Take the chicken first!"
+    },
+    {
+      scenario: "Three missionaries and three cannibals must cross a river. The boat holds max 2 people. Cannibals can't outnumber missionaries on either side. How to cross? ⛵",
+      answer: "two cannibals",
+      hint: "Start with two cannibals"
+    }
+  ];
+
+  // Start Game
+  const startGame = (gameType) => {
+    setCurrentGame(gameType);
+    setScreen('game');
+    setScore(0);
+    setLevel(1);
+    setStreak(0);
+    setFeedback('');
+    
+    if (gameType === 'math') {
+      setQuestion(generateMathQuestion());
+    } else if (gameType === 'riddle') {
+      const randomRiddle = riddles[Math.floor(Math.random() * riddles.length)];
+      setQuestion({ question: randomRiddle.q, answer: randomRiddle.a, type: 'riddle' });
+    } else if (gameType === 'river') {
+      const randomPuzzle = riverPuzzles[Math.floor(Math.random() * riverPuzzles.length)];
+      setQuestion({ ...randomPuzzle, type: 'river' });
+    } else if (gameType === 'pattern') {
+      const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+      setQuestion({ question: randomPattern.q, answer: randomPattern.a, type: 'pattern', pattern: randomPattern.pattern });
+    }
+  };
+
+  // Check Answer
+  const checkAnswer = () => {
+    if (!question || !userAnswer.trim()) {
+      setFeedback('Please enter an answer!');
+      return;
+    }
+    
+    const correct = question.type === 'math' || question.type === 'pattern'
+      ? parseInt(userAnswer) === parseInt(question.answer)
+      : userAnswer.toLowerCase().includes(question.answer.toLowerCase());
+    
+    if (correct) {
+      const points = 10 * level;
+      setScore(score + points);
+      setLevel(level + 1);
+      setStreak(streak + 1);
+      setFeedback(`🎉 Correct! +${points} points!`);
+      
+      setTimeout(() => {
+        if (currentGame === 'math') {
+          setQuestion(generateMathQuestion());
+        } else if (currentGame === 'riddle') {
+          const randomRiddle = riddles[Math.floor(Math.random() * riddles.length)];
+          setQuestion({ question: randomRiddle.q, answer: randomRiddle.a, type: 'riddle' });
+        } else if (currentGame === 'pattern') {
+          const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+          setQuestion({ question: randomPattern.q, answer: randomPattern.a, type: 'pattern', pattern: randomPattern.pattern });
+        } else if (currentGame === 'river') {
+          const randomPuzzle = riverPuzzles[Math.floor(Math.random() * riverPuzzles.length)];
+          setQuestion({ ...randomPuzzle, type: 'river' });
+        }
+        setUserAnswer('');
+        setFeedback('');
+      }, 1500);
+    } else {
+      setFeedback('❌ Wrong! Try again!');
+      setStreak(0);
+    }
+  };
+
+  // Menu Screen
+  const MenuScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex flex-col">
+      <HeaderAd />
+      
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="max-w-4xl w-full">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-6">Choose Your Game</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Math Master */}
+            <button
+              onClick={() => startGame('math')}
+              className="bg-gradient-to-br from-red-500 to-orange-500 rounded-xl p-5 hover:shadow-2xl transform hover:scale-105 transition-all group"
+            >
+              <div className="text-5xl mb-3 group-hover:scale-110 transition">🔢</div>
+              <h3 className="text-xl font-bold text-white mb-2">Math Master</h3>
+              <p className="text-white text-sm opacity-90">Arithmetic problems</p>
+              <div className="mt-3 bg-white bg-opacity-20 rounded-lg py-1.5">
+                <p className="text-white text-sm font-semibold">+ - × ÷</p>
+              </div>
+            </button>
+            
+            {/* River Crossing */}
+            <button
+              onClick={() => startGame('river')}
+              className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl p-5 hover:shadow-2xl transform hover:scale-105 transition-all group"
+            >
+              <div className="text-5xl mb-3 group-hover:scale-110 transition">🌊</div>
+              <h3 className="text-xl font-bold text-white mb-2">River Crossing</h3>
+              <p className="text-white text-sm opacity-90">Logic puzzles</p>
+              <div className="mt-3 bg-white bg-opacity-20 rounded-lg py-1.5">
+                <p className="text-white text-sm font-semibold">🚣 🦊 🐔 🌾</p>
+              </div>
+            </button>
+            
+            {/* Riddles */}
+            <button
+              onClick={() => startGame('riddle')}
+              className="bg-gradient-to-br from-yellow-500 to-amber-500 rounded-xl p-5 hover:shadow-2xl transform hover:scale-105 transition-all group"
+            >
+              <div className="text-5xl mb-3 group-hover:scale-110 transition">💡</div>
+              <h3 className="text-xl font-bold text-white mb-2">Riddles</h3>
+              <p className="text-white text-sm opacity-90">Brain teasers</p>
+              <div className="mt-3 bg-white bg-opacity-20 rounded-lg py-1.5">
+                <p className="text-white text-sm font-semibold">🤔 🧩 🎯</p>
+              </div>
+            </button>
+
+            {/* Pattern Recognition */}
+            <button
+              onClick={() => startGame('pattern')}
+              className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-5 hover:shadow-2xl transform hover:scale-105 transition-all group"
+            >
+              <div className="text-5xl mb-3 group-hover:scale-110 transition">🧩</div>
+              <h3 className="text-xl font-bold text-white mb-2">Pattern Master</h3>
+              <p className="text-white text-sm opacity-90">Number sequences</p>
+              <div className="mt-3 bg-white bg-opacity-20 rounded-lg py-1.5">
+                <p className="text-white text-sm font-semibold">1 2 3 ?</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <FooterAd />
+    </div>
+  );
+
+  // Game Screen
+  const GameScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-teal-500 to-blue-600 flex flex-col">
+      <HeaderAd />
+      
+      <div className="flex-1 p-4">
+        <div className="max-w-2xl mx-auto">
+          {/* Header Stats */}
+          <div className="bg-white rounded-xl p-3 mb-4 shadow-lg">
+            <div className="flex justify-between items-center flex-wrap gap-3">
+              <button 
+                onClick={() => setScreen('menu')}
+                className="flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-blue-600 text-sm"
+              >
+                <Home size={16} />
+                Menu
+              </button>
+              <div className="flex gap-3 flex-wrap text-sm">
+                <div className="flex items-center gap-1.5">
+                  <Trophy className="text-yellow-500" size={18} />
+                  <span className="font-bold">Score: {score}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Target className="text-red-500" size={18} />
+                  <span className="font-bold">Level: {level}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Zap className="text-orange-500" size={18} />
+                  <span className="font-bold">Streak: {streak}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Question Card */}
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 shadow-xl border-4 border-white">
+            {question && (
+              <>
+                <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
+                  {question.type === 'math' && '14 + 28 = ?'}
+                  {question.type === 'riddle' && '💡 Riddle Time'}
+                  {question.type === 'pattern' && '🧩 Find the Pattern'}
+                  {question.type === 'river' && '🌊 River Puzzle'}
+                </h3>
+                
+                <div className="bg-white rounded-xl p-5 mb-4 shadow-md">
+                  <p className="text-2xl text-gray-800 font-semibold text-center">
+                    {question.question}
+                  </p>
+                </div>
+                
+                <input
+                  type="text"
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && checkAnswer()}
+                  placeholder="Answer"
+                  className="w-full p-3 border-2 border-blue-300 rounded-xl mb-3 text-lg focus:border-blue-500 focus:outline-none text-center"
+                />
+                
+                {feedback && (
+                  <div className={`text-center text-base font-bold mb-3 p-2.5 rounded-lg ${
+                    feedback.includes('Correct') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                  }`}>
+                    {feedback}
+                  </div>
+                )}
+                
+                <button
+                  onClick={checkAnswer}
+                  className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-bold text-lg hover:from-green-600 hover:to-emerald-600 flex items-center justify-center gap-2 shadow-lg"
+                >
+                  <Check size={22} />
+                  Check Answer
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <FooterAd />
+    </div>
+  );
+
+  return (
+    <>
+      {screen === 'loading' && <LoadingScreen />}
+      {screen === 'intro' && <IntroScreen />}
+      {screen === 'menu' && <MenuScreen />}
+      {screen === 'game' && <GameScreen />}
+      {showFullScreenAd && <FullScreenAd />}
+    </>
+  );
+};
+
+export default PhantoLogicApp;
+    </script>
+</body>
+</html>
