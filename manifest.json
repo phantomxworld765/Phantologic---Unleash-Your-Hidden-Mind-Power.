@@ -5,7 +5,7 @@
   "display": "standalone",
   "name": "Phantologic",
   "orientation": "portrait",
-  "scope": "/",
+  "scope": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
   "short_name": "Phantologic",
   "start_url": "https://phantomxworld765.github.io/Phantologic---Unleash-Your-Hidden-Mind-Power./",
   "theme_color": "#6366f1",
@@ -20,13 +20,13 @@
   ],
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -35,7 +35,7 @@
   "shortcuts": [
     {
       "name": "Phantologic",
-      "url": "/",
+      "url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
       "description": "Mind Games"
     }
   ]
