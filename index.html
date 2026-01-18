@@ -525,5 +525,17 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<PhantoLogicApp />);
     </script>
-</body>
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/pwabuilder-sw.js')
+          .then(function(registration) {
+            console.log('Service Worker registered:', registration.scope);
+          })
+          .catch(function(error) {
+            console.log('Service Worker registration failed:', error);
+          });
+      }
+    </script>
+  </body>
 </html>
