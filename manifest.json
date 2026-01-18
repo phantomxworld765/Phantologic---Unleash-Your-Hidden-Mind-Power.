@@ -1,15 +1,22 @@
 {
-  "name": "PhantoLogic - Brain Training Games",
-  "short_name": "PhantoLogic",
-  "description": "Master the art of pure logic with PhantoLogic. Challenge your cognitive skills with Math, Riddles, River Crossing puzzles and Pattern recognition games.",
-  "start_url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
-  "scope": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#6366f1",
-  "theme_color": "#6366f1",
+  "background_color": "#ffffff",
   "dir": "ltr",
+  "display": "standalone",
+  "name": "Phantologic",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "Phantologic",
+  "start_url": "https://phantomxworld765.github.io/Phantologic---Unleash-Your-Hidden-Mind-Power./",
+  "theme_color": "#6366f1",
+  "description": "Master the art of pure logic with Phantologic. Challenge your cognitive skills, improve your focus, and solve complex mind puzzles designed to test your IQ and strategic thinking.",
   "lang": "en",
+  "display_override": [
+    "standalone",
+    "window-controls-overlay"
+  ],
+  "categories": [
+    "games"
+  ],
   "icons": [
     {
       "src": "icon-512.png",
@@ -18,65 +25,11 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": [
-    "games",
-    "education"
-  ],
-  "display_override": [
-    "standalone",
-    "window-controls-overlay"
-  ],
   "shortcuts": [
     {
-      "name": "Math Master",
-      "url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./#math",
-      "description": "Quick Math Challenge"
-    },
-    {
-      "name": "Brain Riddles",
-      "url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./#riddles",
-      "description": "Solve Mind Riddles"
-    }
-  ]
-}
-{
-  "background_color": "#6366f1",
-  "dir": "ltr",
-  "display": "standalone",
-  "name": "PhantoLogic - Brain Training Games",
-  "orientation": "portrait",
-  "scope": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
-  "short_name": "PhantoLogic",
-  "start_url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./",
-  "theme_color": "#6366f1",
-  "description": "Master the art of pure logic with PhantoLogic. Challenge your cognitive skills with Math, Riddles, River Crossing puzzles and Pattern recognition games.",
-  "lang": "en",
-  "display_override": [
-    "standalone",
-    "window-controls-overlay"
-  ],
-  "categories": [
-    "games",
-    "education"
-  ],
-"icons": [
-  {
-    "src": "icon-512.png",
-    "sizes": "192x192 512x512",
-    "type": "image/png",
-    "purpose": "any maskable"
-  }
-]
-  "shortcuts": [
-    {
-      "name": "Math Master",
-      "url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./#math",
-      "description": "Quick Math Challenge"
-    },
-    {
-      "name": "Brain Riddles",
-      "url": "/Phantologic---Unleash-Your-Hidden-Mind-Power./#riddles",
-      "description": "Solve Mind Riddles"
+      "name": "Phantologic ",
+      "url": "/",
+      "description": "Mind Games "
     }
   ]
 }
